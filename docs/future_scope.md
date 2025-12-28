@@ -26,3 +26,18 @@ python main.py --debug=true
 ```
 
 The debug mode will expose all the available debug commands.
+
+## 4. Using SQLite Database
+
+Data is stored in primary memory when the script is executed. This means persistent storage is not possible when script is terminated. A database can store large amounts of data, remain persistent and quickly insert/delete/access data. This will change previous implementations of joining/leaving of players, creating new games etc. The SQLite Table Schemas can be defined as..
+
+- games(game_id*, guild_id)
+- players(player_id*, game_id)
+- truth_statements(truth_id*, statement)
+- dare_statements(dare_id*, statement)
+- picked_truth_statement(guild_id, truth_id)
+- picked_dare_statement(guild_id, dare_id)
+
+When the script runs, the database will automatically fetch truth and statements from `statements.json` file. Statements will be fetched randomly from `truth_statements` and `dare_statements` tables and their id will be stored in `picked_truth_statement` and `picked_dare_statement` respectively. This ensures the server/guild does not receive repeating truths and dares.
+
+The `games` table only stores game_id and in which server/guild it belongs to. The `players` table stores the player_id and their corresponding game_id. The Overseer and player selection logic will change. However, I haven't worked on a solution for this.
